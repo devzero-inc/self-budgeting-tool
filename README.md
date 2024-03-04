@@ -33,7 +33,7 @@ MySQL is the world's most popular open-source database. With its proven performa
 
 ### High Level Design 
 
-![HLD Diagram of the self-budgeting tool](https://github.com/PrathamSikka24/self-budgeting-tool/assets/116445216/cdf5db87-2f1c-4952-938b-59b0ad98ae40)
+![HLD Diagram of the self-budgeting tool](https://github.com/devzero-inc/self-budgeting-tool/assets/93814858/7793862a-5595-4b53-aee2-53213dbbed0e)
 
 ### Working of the Self-Budgeting Tool
 
