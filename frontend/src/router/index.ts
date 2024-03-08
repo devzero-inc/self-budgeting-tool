@@ -9,6 +9,17 @@ const router = createRouter({
       name: 'home',
       component: HomeView
     },
+    {
+      path: '/all-accounts',
+      name: 'all-accounts',
+      component: () => import('../components/AllAccountsView.vue')
+    },
+    {
+      path: '/account/:bankName',
+      name: 'bank-account',
+      component: () => import('../components/BankAccountView.vue'),
+      props: true
+    },
   ]
 })
 
