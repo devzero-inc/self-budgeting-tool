@@ -96,6 +96,14 @@ export default defineComponent({
             <p>${{ totalBalance }}</p>
           </RouterLink>
           <div class="hidden w-full md:flex flex-col items-center mt-6">
+            <RouterLink
+              active-class="link-active"
+              to="/budgeted-accounts"
+              class="py-2 px-7 hover:bg-purple-700 transition duration-300 w-full font-semibold flex items-center justify-between"
+            >
+              <h1>Budgeted</h1>
+              <span>$ {{ totalBudgeted.toLocaleString("en-US") }}</span>
+            </RouterLink>
             <div
               v-for="bank in banks"
               :key="bank.bank_name"
@@ -116,6 +124,30 @@ export default defineComponent({
                     })
                   }}</span
                 >
+              </RouterLink>
+            </div>
+          </div>
+          <div class="hidden w-full md:flex flex-col items-center mt-6">
+            <RouterLink
+              active-class="link-active"
+              to="/off-budget-accounts"
+              class="py-2 px-7 hover:bg-purple-700 transition duration-300 font-semibold w-full flex items-center justify-between"
+              >Off-Budget<span
+                >$ {{ totalOffBudget.toLocaleString("en-US") }}</span
+              >
+            </RouterLink>
+            <div
+              v-for="asset in offBudget"
+              :key="asset"
+              class="text-sm flex flex-col w-full"
+            >
+              <RouterLink
+                active-class="link-active"
+                :to="`/asset/${asset}`"
+                class="py-2 px-7 hover:bg-purple-700 transition duration-300 w-full flex items-center justify-between"
+              >
+                {{ asset }}
+                <span>$ {{ assetTotals[asset].toLocaleString("en-US") }}</span>
               </RouterLink>
             </div>
           </div>

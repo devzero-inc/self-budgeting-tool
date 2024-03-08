@@ -15,11 +15,32 @@ const router = createRouter({
       component: () => import('../components/AllAccountsView.vue')
     },
     {
+      path: '/budgeted-accounts',
+      name: 'budgeted-accounts',
+      component: () => import('../components/BudgetedView.vue')
+    },
+    {
       path: '/account/:bankName',
       name: 'bank-account',
       component: () => import('../components/BankAccountView.vue'),
       props: true
     },
+    {
+      path: '/off-budget-accounts',
+      name: 'off-budget-accounts',
+      component: () => import('../components/OffBudgetView.vue')
+    },
+    {
+      path: '/asset/:assetName',
+      name: 'asset-name',
+      component: () => import('../components/AssetView.vue'),
+      props: true
+    },
+    {
+      path: '/contact',
+      name: 'contact',
+      component: () => import('../components/ContactView.vue')
+    }
   ]
 })
 
