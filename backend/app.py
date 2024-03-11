@@ -51,6 +51,33 @@ def get_transactions():
         return jsonify({"data": transactions})
     else:
         return jsonify({"error": "Database connection failed"}), 500
+    
+@app.route('/transactions', methods=['POST'])
+def add_transaction():
+    transaction_data = request.json
+    conn = get_db_connection()
+    if conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            'INSERT INTO transactions '
+            '(account_id, bank_name, date, type, payee, amount, category) '
+            'VALUES (%s, %s, %s, %s, %s, %s, %s)',
+            (
+                transaction_data['account_id'],
+                transaction_data['bank_name'],
+                transaction_data['date'],
+                transaction_data['type'],
+                transaction_data['payee'],
+                transaction_data['amount'],
+                transaction_data['category']
+            )
+        )
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return jsonify({"message": "Transaction added successfully"}), 201
+    else:
+        return jsonify({"error": "Database connection failed"}), 500
 
 if __name__ == "__main__":
     app.run(debug=True)
