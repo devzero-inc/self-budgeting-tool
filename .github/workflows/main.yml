@@ -1,0 +1,93 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  setup-backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          pip install -r requirements.txt
+
+      - name: Run backend tests
+        run: |
+          cd backend
+          python -m unittest discover -s tests
+
+  setup-frontend:
+    needs: setup-backend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm install
+
+      - name: Run frontend lint
+        run: |
+          cd frontend
+          npm run lint
+
+      - name: Run frontend tests
+        run: |
+          cd frontend
+          npm test
+
+  check-docker-compose:
+    needs: [setup-backend, setup-frontend]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Start services
+        run: docker-compose up -d
+
+      - name: Wait for vue-frontend service to become healthy
+        run: |
+          echo "Waiting for vue-frontend service to become healthy..."
+          RETRIES=10
+          while [ $RETRIES -gt 0 ]; do
+            HEALTH_STATUS=$(docker inspect --format='{{.State.Health.Status}}' $(docker-compose ps -q vue-frontend))
+            if [ "$HEALTH_STATUS" == "healthy" ]; then
+              echo "vue-frontend service is healthy."
+              break
+            else
+              echo "Waiting for vue-frontend service to become healthy. Current status: $HEALTH_STATUS"
+              sleep 10
+              RETRIES=$((RETRIES-1))
+            fi
+          done
+
+          if [ $RETRIES -le 0 ]; then
+            echo "vue-frontend service did not become healthy in time."
+            exit 1
+          fi
+
+      - name: Shutdown services
+        run: docker-compose down

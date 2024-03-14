@@ -3,6 +3,8 @@
 ## Overview
 The Self-Budgeting Tool is a comprehensive web application designed to empower users with complete control over their finances. Track income, expenses, recurring and fixed costs, savings, loans, and more in one intuitive interface. Make informed decisions and achieve your financial goals with ease.
 
+![frontend](https://github.com/devzero-inc/self-budgeting-tool/assets/93814858/ab9d0e56-df58-45fa-9df3-d3de658db4a7)
+
 ## Features
 
 ### Income and Expenses Tracking
@@ -52,3 +54,18 @@ MySQL is the world's most popular open-source database. With its proven performa
 **Caching and Performance Optimization**: While not specified in the initial setup, implementing caching with tools such as Redis could significantly enhance the application's performance. It would be particularly beneficial for quickly accessing frequently used data, such as monthly expense summaries or savings progress reports.
 
 **Response Handling**: After the backend processes a request, including data storage, updates, or retrieval, it generates a response that is sent back to the frontend via the middleware. The Vue.js application then updates the user interface accordingly, reflecting the new or modified data. This ensures that users have real-time access to their financial information, contributing to a seamless and efficient user experience.
+
+## Installation
+
+### Prerequisites
+- Docker
+
+Run locally: 
+```bash
+git clone https://github.com/devzero-inc/self-budgeting-tool.git
+cd self-budgeting-tool
+docker compose up
+```
+App will be running on ```PORT:4173``` -> [http://localhost:4173/](http://localhost:4173/)
+
+Now just go to [http://localhost:4173/](http://localhost:4173/) and explore the application.

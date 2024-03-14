@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  flask-backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_HOST=db
+      - DB_PASSWORD=password
+      - DB_DATABASE=budget
+      - DB_USER=root
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 10s
+      timeout: 10s
+      retries: 20
+    depends_on:
+      db:
+        condition: service_healthy
+
+  vue-frontend:
+    build: ./frontend
+    ports:
+      - "4173:4173"
+    depends_on:
+      flask-backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4173/"]
+      interval: 10s
+      timeout: 10s
+      retries: 20
+      start_period: 10s
+        
+  db:
+    image: mysql
+    environment:
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_DATABASE: budget
+    ports:
+      - "3307:3306"
+    volumes:  
+      - db-data:/var/lib/mysql
+      - ./backend/init-db:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", 'mysql --user=user --password=password --database=budget -e "SELECT 1"']
+      interval: 10s
+      timeout: 10s
+      retries: 20
+      start_period: 10s
+
+volumes:
+  db-data:     
