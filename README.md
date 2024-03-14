@@ -3,6 +3,8 @@
 ## Overview
 The Self-Budgeting Tool is a comprehensive web application designed to empower users with complete control over their finances. Track income, expenses, recurring and fixed costs, savings, loans, and more in one intuitive interface. Make informed decisions and achieve your financial goals with ease.
 
+![frontend](https://github.com/devzero-inc/self-budgeting-tool/assets/93814858/ab9d0e56-df58-45fa-9df3-d3de658db4a7)
+
 ## Features
 
 ### Income and Expenses Tracking
