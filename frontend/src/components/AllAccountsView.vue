@@ -3,13 +3,20 @@ import { defineComponent, inject, ref, computed } from "vue";
 import type { Ref } from "vue";
 import type { Transaction } from "../domain/transaction";
 import TransactionsTable from "../components/TransactionsTable.vue";
+import AddTransaction from "../components/AddTransaction.vue";
 
 export default defineComponent({
   components: {
     TransactionsTable,
+    AddTransaction,
   },
   setup() {
     const transactions = inject<Ref<Array<Transaction>>>("transactions");
+    const showModal = ref(false);
+
+    const handleAddTransaction = (newTransaction: Transaction) => {
+      alert(`Added new transaction successfully in ${newTransaction.bank_name} `);
+    };
 
     const totalPayments = computed(() => {
       return transactions?.value?.filter(t => parseFloat(t.amount.toString()) < 0).reduce((acc, curr) => acc + parseFloat(curr.amount.toString()), 0) ?? 0;
@@ -19,7 +26,7 @@ export default defineComponent({
       return transactions?.value?.filter(t => parseFloat(t.amount.toString()) > 0).reduce((acc, curr) => acc + parseFloat(curr.amount.toString()), 0) ?? 0;
     });
 
-    return { transactions, totalPayments, totalDeposits };
+    return { transactions, totalPayments, totalDeposits, showModal, handleAddTransaction};
   },
 });
 </script>
@@ -35,20 +42,24 @@ export default defineComponent({
         <p>Total Payments: <span class="text-red-500">{{ totalPayments.toFixed(2) }}</span></p>
         <p>Total Deposits: <span class="text-green-500">{{ totalDeposits.toFixed(2) }}</span></p>
       </div>
-      <!-- Add New Transaction Button -->
+      
       <button
         class="w-fit h-fit flex items-center justify-center gap-2 bg-custom-blue text-white px-4 py-2 rounded-lg hover:bg-purple-700"
+        @click="showModal = true"
       >
         <span class=" text-2xl -mt-1">&#43; </span>
         <span>Add New Transaction</span>
       </button>
     </div>
 
-    <!-- Transactions Table -->
+    <AddTransaction
+      v-model:showModal="showModal"
+      @add-transaction="handleAddTransaction"
+    />
+
     <div v-if="transactions">
       <TransactionsTable :transactions="transactions ?? []" />
     </div>
 
-    <!-- Totals Display -->
   </div>
 </template>

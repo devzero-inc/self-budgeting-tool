@@ -51,7 +51,6 @@ export default defineComponent({
       offBudget.value.forEach(asset => {
         totals[asset] = transactions?.value?.filter(t => t.payee === asset).reduce((acc, curr) => acc + parseFloat(String(curr.amount)), 0) ?? 0;
       });
-      console.log(totals);
       return totals;
     });
 
